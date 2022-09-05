@@ -34,7 +34,7 @@ jobs:
         key: ${{ runner.os }}-gds-${{ github.run_id }}
     - name: generate svg
       run: |
-        python -m pip install gdstk svgutild
+        python -m pip install gdstk svgutils
         python << EOF
         import gdstk
         library = gdstk.read_gds('gds/user_project_wrapper.gds')
