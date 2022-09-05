@@ -42,7 +42,7 @@ jobs:
         top_cells[0].write_svg('user_project_wrapper_raw.svg')
         import svgutils.transform as sg
         fig = sg.fromfile('user_project_wrapper_raw.svg')
-        fig.set_size([1000, 1000])
+        fig.set_size(['1000', '1000'])
         fig.save('user_project_wrapper.svg')
         EOF
     - name: convert to png
