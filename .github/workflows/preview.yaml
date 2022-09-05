@@ -36,13 +36,18 @@ jobs:
       run: |
         python -m pip install gdstk
         python << EOF
-        import pathlib
         import gdstk
+
+        library = gdstk.read_gds('gds/user_project_wrapper.gds')
+        top_cells = library.top_level()
+        top_cells[0].write_svg('user_project_wrapper.svg')
+        EOF
+    - name: convert to png
+      run: |
+        python -m pip install cairosvg
+        python << EOF
         import cairosvg
 
-        gds = pathlib.Path('gds/user_project_wrapper.gds')
-        library = gdstk.read_gds(gds)
-        top_cells = library.top_level()
         top_cells[0].write_svg('user_project_wrapper.svg')
         cairosvg.svg2png(url='user_project_wrapper.svg', write_to='user_project_wrapper.png')
         EOF
