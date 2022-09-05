@@ -37,7 +37,6 @@ jobs:
         python -m pip install gdstk
         python << EOF
         import gdstk
-
         library = gdstk.read_gds('gds/user_project_wrapper.gds')
         top_cells = library.top_level()
         top_cells[0].write_svg('user_project_wrapper.svg')
@@ -47,8 +46,6 @@ jobs:
         python -m pip install cairosvg
         python << EOF
         import cairosvg
-
-        top_cells[0].write_svg('user_project_wrapper.svg')
         cairosvg.svg2png(url='user_project_wrapper.svg', write_to='user_project_wrapper.png')
         EOF
     - name: populate img cache
