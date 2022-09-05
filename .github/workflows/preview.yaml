@@ -34,12 +34,16 @@ jobs:
         key: ${{ runner.os }}-gds-${{ github.run_id }}
     - name: generate svg
       run: |
-        python -m pip install gdstk
+        python -m pip install gdstk svgutild
         python << EOF
         import gdstk
         library = gdstk.read_gds('gds/user_project_wrapper.gds')
         top_cells = library.top_level()
-        top_cells[0].write_svg('user_project_wrapper.svg')
+        top_cells[0].write_svg('user_project_wrapper_raw.svg')
+        import svgutils.transform as sg
+        fig = sg.fromfile('user_project_wrapper_raw.svg')
+        fig.scale_xy(0.1, 0.1)
+        fig.save('user_project_wrapper.svg')
         EOF
     - name: convert to png
       run: |
