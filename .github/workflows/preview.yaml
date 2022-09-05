@@ -38,17 +38,19 @@ jobs:
         python << EOF
         import pathlib
         import gdstk
+        import cairosvg
 
         gds = pathlib.Path('gds/user_project_wrapper.gds')
         library = gdstk.read_gds(gds)
         top_cells = library.top_level()
         top_cells[0].write_svg('user_project_wrapper.svg')
+        cairosvg.svg2png(url='user_project_wrapper.svg', write_to='user_project_wrapper.png')
         EOF
-    - name: populate svg cache
+    - name: populate img cache
       uses: actions/cache@v2
       with:
-        path: user_project_wrapper.svg
-        key: ${{ runner.os }}-svg-${{ github.run_id }}
+        path: user_project_wrapper.png
+        key: ${{ runner.os }}-img-${{ github.run_id }}
   pages:
     needs:
     - svg
@@ -62,13 +64,8 @@ jobs:
     - name: restore svg cache
       uses: actions/cache@v2
       with:
-        path: user_project_wrapper.svg
-        key: ${{ runner.os }}-svg-${{ github.run_id }}
-    - name: restore webgl cache
-      uses: actions/cache@v2
-      with:
-        path: index.html
-        key: ${{ runner.os }}-webgl-${{ github.run_id }}
+        path: user_project_wrapper.png
+        key: ${{ runner.os }}-img-${{ github.run_id }}
     - name: Setup Pages
       uses: actions/configure-pages@v2
     - name: Upload artifact
@@ -89,5 +86,5 @@ jobs:
         cat << EOF >> $GITHUB_STEP_SUMMARY
         # svg
 
-        ![svg]($PAGE_URL/user_project_wrapper.svg)
+        ![svg]($PAGE_URL/user_project_wrapper.png)
 
